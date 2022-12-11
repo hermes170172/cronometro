@@ -1,4 +1,4 @@
 # cronometro
-Cronômetro feito com HTML, CSS e JQuery
+Uma simples e funcional aplicação FRONT END feita com HTML, CSS e JQUERY
 <br>
-## link -> https://hrribeiro.com/cronometro/
+#### link -> https://hrribeiro.com/cronometro/
