@@ -1,27 +1,37 @@
-var w = $("#cont").width() / 2;
+var w = $("#cont").width() / 2; //obtenho na variavel w o número exato da metade da largura da tela
 
+/** Para evitar que a tela trema enquanto o cronometro estiver rodando,
+ * temos que o configurar como posição absolute
+ * e depois para o posicionar sempre no meio da tela, usamos left e margin-left
+ **/
 $("#cont").css({
     position: "absolute",
-    left: 50 + "%",
+    left: 50 + "%", // Início
     "margin-left": -w + "px",
 });
-var hh = 0;
-var mm = 0;
-var ss = 0;
-var mil = 0;
-var cron;
+
+/** Declaração das variaveis e objetos html*/
+var hh = 0; //hora
+var mm = 0; //minuto
+var ss = 0; //segundo
+var mil = 0; //milessegundo
+var cron; // variavel de controle
 var inicio = $(".btni");
 var zerar = $(".btnz");
 
+/** Função invocada pelo clique do botão inicio que guarda na variavel cron,
+ *  num intervalo de 10 milessegundos, os valores vindos da função timer()*/
 function start() {
     cron = setInterval(() => {
         timer();
     }, 10);
 }
-//Para o temporizador mas não limpa as variáveis
+//Pausa o cronometro sem zerar as variaveis
 function pause() {
     clearInterval(cron);
 }
+
+/** Para o cronometro e reseta todas variaveis */
 function stop() {
     clearInterval(cron);
     hh = 0;
@@ -29,23 +39,24 @@ function stop() {
     ss = 0;
     mil = 0;
 
-    document.getElementById("cont").innerText = "00:00:00:00";
+    $("#cont").text("00:00:00:00"); // renderiza o cronometro em 0
 }
 
 function timer() {
-    mil++; //Incrementa +1 na variável ss
+    mil++; //Incrementa 1 na variável mil
 
     if (mil == 100) {
-        //Verifica se deu 59 segundos
-        mil = 0; //Volta os segundos para 0
-        ss++; //Adiciona +1 na variável mm
+        // Quando a variavel mil atinge 100, mil recebe o valor zero e a variavel ss incrementa 1
+        mil = 0;
+        ss++;
     }
     if (ss == 59) {
-        //Verifica se deu 59 minutos
-        ss = 0; //Volta os minutos para 0
-        mm++; //Adiciona +1 na variável hora
+        // Quando a variavel ss atinge 59, ss recebe o valor zero e a variavel mm incrementa 1
+        ss = 0;
+        mm++;
     }
     if (mm == 59) {
+        // Quando a variavel mm atinge 59, mm recebe o valor zero e a variavel hh incrementa 1
         mm = 0;
         hh++;
     }
@@ -60,24 +71,27 @@ function timer() {
         ":" +
         (mil < 10 ? "0" + mil : mil);
 
-    document.getElementById("cont").innerText = format;
+    $("#cont").text(format); //renderiza os valores formatados contidos na variavel format
 
     return format;
 }
-var ini = 0;
+var ini = false;
+/** Eventos de clique */
+/** Inicia e pausa o cronometro */
 inicio.click(() => {
-    if (ini == 0) {
+    if (!ini) {
         start();
         inicio.text("PAUSE");
-        ini = 1;
-    } else if (ini == 1) {
+        ini = true;
+    } else {
         pause();
         inicio.text("RETOMAR");
-        ini = 0;
+        ini = false;
     }
 });
+/**Para e zera o cronometro   */
 zerar.click(() => {
     stop();
     inicio.text("INICIAR");
-    ini = 0;
+    ini = false;
 });
